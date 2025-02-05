@@ -13,17 +13,21 @@ const formSchema = yup.object({
   items: yup.array().of(
     yup.object({
       field1: yup.string().required("Text field is required"),
-      field2: yup.number()
+      field2: yup
+        .number()
         .typeError("Must be a number")
         .required("Number field is required")
         .min(0, "Must be positive"),
-      field3: yup.string()
+      field3: yup
+        .string()
         .email("Must be a valid email")
         .required("Email field is required"),
-      field4: yup.date()
+      field4: yup
+        .date()
         .typeError("Must be a valid date")
         .required("Date field is required"),
-      field5: yup.string()
+      field5: yup
+        .string()
         .url("Must be a valid URL")
         .required("URL field is required"),
     })
@@ -48,9 +52,9 @@ export default function Home() {
       items: [
         {
           field1: "",
-          field2: "",
+          field2: 0,
           field3: "",
-          field4: "",
+          field4: new Date(),
           field5: "",
         },
       ],
@@ -66,9 +70,9 @@ export default function Home() {
     const start = performance.now();
     append({
       field1: "",
-      field2: "",
+      field2: 0,
       field3: "",
-      field4: "",
+      field4: new Date(),
       field5: "",
     });
     const end = performance.now();
@@ -86,9 +90,11 @@ export default function Home() {
 
   const onSubmit = (data: FormValues) => {
     toast.success("Form submitted successfully!", {
-      description: <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-        <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-      </pre>
+      description: (
+        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+        </pre>
+      ),
     });
   };
 
@@ -110,10 +116,7 @@ export default function Home() {
 
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           {fields.map((field, index) => (
-            <div
-              key={field.id}
-              className="space-y-4 p-4 border rounded-lg"
-            >
+            <div key={field.id} className="space-y-4 p-4 border rounded-lg">
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">Text</label>
